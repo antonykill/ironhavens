@@ -24,7 +24,15 @@ if ($logged_in) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo SITE_NAME; ?></h1>
+    <title><?php echo SITE_NAME; ?></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="game-container">
+        <header>
+            <h1><?php echo SITE_NAME; ?></h1>
             
             <div class="user-info">
                 <?php if ($logged_in): ?>
@@ -233,12 +241,4 @@ if ($logged_in) {
     
     <script src="js/game.js"></script>
 </body>
-</html>; ?></title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-</head>
-<body>
-    <div class="game-container">
-        <header>
-            <h1><?php echo SITE_NAME
+</html>

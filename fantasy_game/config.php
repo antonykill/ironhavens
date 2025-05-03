@@ -3,12 +3,12 @@
 
 // Configurazioni di connessione al database
 define('DB_HOST', 'localhost');          // Host del database
-define('DB_NAME', 'fantasy_game');       // Nome del database
-define('DB_USER', 'root');               // Username del database (cambia con il tuo)
-define('DB_PASS', 'password');           // Password del database (cambia con la tua)
+define('DB_NAME', 'u492367864_ironhaven');       // Nome del database
+define('DB_USER', 'u492367864_ironhaven');               // Username del database (cambia con il tuo)
+define('DB_PASS', '!3N#sAbG');           // Password del database (cambia con la tua)
 
 // Configurazioni del gioco
-define('SITE_NAME', 'Fantasy Resource Game');
+define('SITE_NAME', 'IronHaven');
 define('GAME_VERSION', '1.0.0');
 
 // Impostazioni di sviluppo

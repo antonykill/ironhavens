@@ -1,12 +1,6 @@
 <?php
-// config.php - Configurazione database e altre impostazioni
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'fantasy_game');
-define('DB_USER', 'root'); // Cambia con il tuo username MySQL
-define('DB_PASS', 'password'); // Cambia con la tua password MySQL
-define('SITE_NAME', 'Fantasy Resource Game');
-define('GAME_VERSION', '1.0.0');
-
+// Includi il file di configurazione
+require_once 'config.php';
 // Connessione al database
 function db_connect() {
     try {

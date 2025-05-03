@@ -1,8 +1,8 @@
 -- database_setup.sql - Script di inizializzazione del database Fantasy Game
 
 -- Crea il database se non esiste già
-CREATE DATABASE IF NOT EXISTS fantasy_game DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE fantasy_game;
+CREATE DATABASE IF NOT EXISTS u492367864_ironhaven DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE u492367864_ironhaven;
 
 -- Elimina le tabelle se esistono già (utile per reinstallare il gioco)
 DROP TABLE IF EXISTS game_events;
