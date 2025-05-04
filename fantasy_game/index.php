@@ -1,11 +1,20 @@
 <?php
-// Include le funzioni di gioco
-require_once 'backend.php';
+/**
+ * Index File
+ * 
+ * Punto di ingresso principale del gioco
+ */
+
+// Includi la configurazione
+require_once 'config.php';
 
 // Controlla se l'utente è loggato
 $logged_in = is_logged_in();
-$user_id = $_SESSION['user_id'] ?? null;
-$username = $_SESSION['username'] ?? null;
+$user_id = get_current_user_id();
+$username = get_current_username();
+
+// Verifica se l'utente è un amministratore
+$is_admin = $logged_in ? is_admin() : false;
 
 // Se l'utente è loggato, ottieni le sue risorse
 $resources = $logged_in ? get_player_resources($user_id) : null;
@@ -18,6 +27,22 @@ if ($logged_in) {
     // Aggiorna le risorse ogni volta che l'utente carica la pagina
     update_player_resources($user_id);
 }
+
+// Gestione del routing
+$page = $_GET['page'] ?? '';
+
+// Se è specificata una pagina, carica il file corrispondente
+if (!empty($page)) {
+    $page_file = 'pages/' . $page . '.php';
+    
+    if (file_exists($page_file)) {
+        // Includi il file della pagina
+        include $page_file;
+        exit;
+    }
+}
+
+// Se non è specificata una pagina valida, carica la pagina principale del gioco
 ?>
 <!DOCTYPE html>
 <html lang="it">
@@ -26,7 +51,7 @@ if ($logged_in) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo SITE_NAME; ?></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="<?php echo get_asset_path('css/style.css'); ?>">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
@@ -36,8 +61,12 @@ if ($logged_in) {
             
             <div class="user-info">
                 <?php if ($logged_in): ?>
-                    <span class="welcome">Benvenuto, <strong><?php echo htmlspecialchars($username); ?></strong>!</span>
+                    <span class="welcome">Benvenuto, <strong><?php echo sanitize_input($username); ?></strong>!</span>
                     <span class="level">Livello: <?php echo $player_level['current_level']; ?></span>
+                    <a href="<?php echo BASE_URL; ?>?page=profile" class="profile-link"><i class="fas fa-user"></i> Profilo</a>
+                    <?php if ($is_admin): ?>
+                        <a href="<?php echo BASE_URL; ?>?page=admin" class="admin-link"><i class="fas fa-crown"></i> Admin</a>
+                    <?php endif; ?>
                     <a href="#" class="logout-btn" id="logout-btn">Logout</a>
                 <?php else: ?>
                     <a href="#" class="login-btn" id="login-btn">Login</a>
@@ -45,6 +74,13 @@ if ($logged_in) {
                 <?php endif; ?>
             </div>
         </header>
+        
+        <?php if (isset($_SESSION['admin_error'])): ?>
+        <div class="admin-error-message">
+            <i class="fas fa-exclamation-triangle"></i> <?php echo $_SESSION['admin_error']; ?>
+            <?php unset($_SESSION['admin_error']); ?>
+        </div>
+        <?php endif; ?>
         
         <?php if ($logged_in): ?>
         <!-- Contatori delle risorse -->
@@ -77,6 +113,7 @@ if ($logged_in) {
                 <button class="tab-btn active" data-tab="village">Il Mio Villaggio</button>
                 <button class="tab-btn" data-tab="buildings">Costruisci</button>
                 <button class="tab-btn" data-tab="progress">Progressi</button>
+                <a href="<?php echo BASE_URL; ?>?page=tech-tree" class="tech-tree-link"><i class="fas fa-sitemap"></i> Albero Tecnologico</a>
             </div>
             
             <div class="tab-content">
@@ -108,9 +145,9 @@ if ($logged_in) {
                             <h3>Livello</h3>
                             <div class="level-display"><?php echo $player_level['current_level']; ?></div>
                             <div class="xp-bar">
-                                <div class="xp-fill" style="width: <?php echo min(100, ($player_level['experience_points'] / (($player_level['current_level'] * 100) + 100)) * 100); ?>%"></div>
+                                <div class="xp-fill" style="width: <?php echo min(100, ($player_level['experience_points'] / $player_level['next_level_xp']) * 100); ?>%"></div>
                             </div>
-                            <div class="xp-text">XP: <?php echo $player_level['experience_points']; ?> / <?php echo ($player_level['current_level'] * 100) + 100; ?></div>
+                            <div class="xp-text">XP: <?php echo $player_level['experience_points']; ?> / <?php echo $player_level['next_level_xp']; ?></div>
                         </div>
                         
                         <div class="stat">
@@ -239,6 +276,6 @@ if ($logged_in) {
         <div class="notification-content" id="notification-content"></div>
     </div>
     
-    <script src="js/game.js"></script>
+    <script src="<?php echo get_asset_path('js/game.js'); ?>"></script>
 </body>
 </html>
