@@ -1,6 +1,6 @@
 <?php
 // Includi le funzioni di gioco
-require_once 'backend.php';
+require_once __DIR__ . '/../config.php';
 
 // Verifica se l'utente è loggato e se è un amministratore
 $logged_in = is_logged_in();
@@ -306,18 +306,6 @@ function get_game_constants() {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
         error_log("Errore nell'ottenere le costanti di gioco: " . $e->getMessage());
-        return [];
-    }
-}
-
-// Funzione per ottenere tutti i tipi di edifici
-function get_all_building_types() {
-    try {
-        $pdo = db_connect();
-        $stmt = $pdo->query('SELECT * FROM building_types ORDER BY level_required, name');
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-        error_log("Errore nell'ottenere i tipi di edifici: " . $e->getMessage());
         return [];
     }
 }

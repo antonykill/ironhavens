@@ -1,6 +1,6 @@
 <?php
 // Include le funzioni di gioco
-require_once 'backend.php';
+require_once __DIR__ . '/../config.php';
 
 // Controlla se l'utente è loggato
 $logged_in = is_logged_in();
