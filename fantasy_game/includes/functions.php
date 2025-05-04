@@ -9,7 +9,6 @@
 require_once 'db.php';
 require_once 'auth.php';
 require_once 'building.php';
-require_once 'api.php';
 
 /**
  * Genera un'intestazione HTTP per reindirizzare a un'altra pagina

@@ -56,7 +56,7 @@ function formatTimeRemaining(endTime) {
 // Aggiornamento delle risorse in tempo reale
 function updateResourcesDisplay() {
     $.ajax({
-        url: 'backend.php?action=get_resources',
+        url: 'api.php?action=get_resources',
         method: 'GET',
         dataType: 'json',
         success: function(response) {
@@ -79,7 +79,7 @@ function updateResourcesDisplay() {
 // Aggiornamento periodico delle risorse nel server
 function updateServerResources() {
     $.ajax({
-        url: 'backend.php?action=update_resources',
+        url: 'api.php?action=update_resources',
         method: 'GET',
         dataType: 'json',
         success: function(response) {
@@ -106,7 +106,7 @@ function updateServerResources() {
 // Caricamento degli edifici del giocatore
 function loadPlayerBuildings() {
     $.ajax({
-        url: 'backend.php?action=get_buildings',
+        url: 'api.php?action=get_buildings',
         method: 'GET',
         dataType: 'json',
         success: function(buildings) {
@@ -313,7 +313,7 @@ function showBuildingDetails(buildingId, buildings) {
 // Caricamento degli edifici disponibili per la costruzione
 function loadAvailableBuildings() {
     $.ajax({
-        url: 'backend.php?action=available_buildings',
+        url: 'api.php?action=available_buildings',
         method: 'GET',
         dataType: 'json',
         success: function(buildings) {
@@ -332,7 +332,7 @@ function loadAvailableBuildings() {
             
             // Ottieni le risorse del giocatore per controllare se ha abbastanza per costruire
             $.ajax({
-                url: 'backend.php?action=get_resources',
+                url: 'api.php?action=get_resources',
                 method: 'GET',
                 dataType: 'json',
                 success: function(resources) {
@@ -466,7 +466,7 @@ function loadAvailableBuildings() {
 // Avvia la costruzione di un edificio
 function startConstruction(buildingTypeId) {
     $.ajax({
-        url: 'backend.php?action=start_construction',
+        url: 'api.php?action=start_construction',
         method: 'POST',
         data: {
             building_type_id: buildingTypeId
@@ -511,7 +511,7 @@ function updateConstructionTimers() {
 // Controlla gli edifici completati
 function checkCompletedBuildings() {
     $.ajax({
-        url: 'backend.php?action=check_buildings',
+        url: 'api.php?action=check_buildings',
         method: 'GET',
         dataType: 'json',
         success: function(response) {
@@ -590,7 +590,7 @@ $('#login-form').submit(function(e) {
     }
     
     $.ajax({
-        url: 'backend.php?action=login',
+        url: 'api.php?action=login',
         method: 'POST',
         data: {
             username_email: username_email,
@@ -632,7 +632,7 @@ $('#register-form').submit(function(e) {
     }
     
     $.ajax({
-        url: 'backend.php?action=register',
+        url: 'api.php?action=register',
         method: 'POST',
         data: {
             username: username,
@@ -665,7 +665,7 @@ $('#logout-btn').click(function(e) {
     e.preventDefault();
     
     $.ajax({
-        url: 'backend.php?action=logout',
+        url: 'api.php?action=logout',
         method: 'GET',
         dataType: 'json',
         success: function(response) {

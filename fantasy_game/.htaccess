@@ -1,0 +1,22 @@
+# Abilita il motore di rewrite
+RewriteEngine On
+
+# Imposta la directory base
+RewriteBase /fantasy_game/
+
+# Reindirizza le richieste alle pagine
+RewriteRule ^profile$ index.php?page=profile [L,QSA]
+RewriteRule ^admin$ index.php?page=admin [L,QSA]
+RewriteRule ^tech-tree$ index.php?page=tech-tree [L,QSA]
+
+# Proteggi i file sensibili
+<FilesMatch "(\.htaccess|config\.php)$">
+  Order Allow,Deny
+  Deny from all
+</FilesMatch>
+
+# Proteggi le directory sensibili
+<FilesMatch "^(backup|setup)/">
+  Order Allow,Deny
+  Deny from all
+</FilesMatch>
