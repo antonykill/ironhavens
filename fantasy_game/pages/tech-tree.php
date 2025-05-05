@@ -36,8 +36,8 @@ foreach ($unlocked_buildings as $building) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Albero Tecnologico - <?php echo SITE_NAME; ?></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/tech-tree.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/style.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/tech-tree.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
@@ -46,14 +46,7 @@ foreach ($unlocked_buildings as $building) {
             <h1><?php echo SITE_NAME; ?></h1>
             
             <div class="user-info">
-                <span class="welcome">Benvenuto, <strong><?php echo htmlspecialchars($username); ?></strong>!</span>
-                <span class="level">Livello: <?php echo $player_level['current_level']; ?></span>
-                <a href="profile.php" class="profile-link"><i class="fas fa-user"></i> Profilo</a>
-                <?php if (is_admin($user_id)): ?>
-                <a href="admin.php" class="admin-link"><i class="fas fa-crown"></i> Admin</a>
-                <?php endif; ?>
                 <a href="index.php" class="back-to-game-btn"><i class="fas fa-gamepad"></i> Torna al Gioco</a>
-                <a href="#" class="logout-btn" id="logout-btn">Logout</a>
             </div>
         </header>
         
@@ -150,7 +143,7 @@ foreach ($unlocked_buildings as $building) {
                 
                 // Carica i dettagli via AJAX
                 $.ajax({
-                    url: 'backend.php?action=get_building_details',
+                    url: '<?php echo BASE_URL; ?>includes/api.php?action=get_building_details',
                     method: 'GET',
                     data: { building_id: buildingId },
                     dataType: 'json',
@@ -346,24 +339,6 @@ foreach ($unlocked_buildings as $building) {
                 }
             });
             
-            // Gestione del logout
-            $('#logout-btn').click(function(e) {
-                e.preventDefault();
-                
-                $.ajax({
-                    url: 'backend.php?action=logout',
-                    method: 'GET',
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response.success) {
-                            window.location.href = 'index.php';
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Errore durante il logout:', error);
-                    }
-                });
-            });
         });
     </script>
 </body>
