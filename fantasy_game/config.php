@@ -32,6 +32,7 @@ define('SALT_PREFIX', 'ironhaven_');      // Prefisso per il salt delle password
 // Impostazioni percorsi
 define('BASE_URL', '/fantasy_game/');     // URL base del gioco (cambia in base alla tua configurazione)
 define('ADMIN_EMAIL', 'admin@ironhaven.online'); // Email dell'amministratore
+define('IMAGES_URL', BASE_URL); // invece di BASE_URL . 'assets/images/'
 
 // Configurazione timezone
 date_default_timezone_set('Europe/Rome'); // Cambia in base alla tua zona

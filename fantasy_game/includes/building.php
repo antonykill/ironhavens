@@ -222,6 +222,8 @@ function start_building_construction($user_id, $building_type_id) {
  * @return array Risultato dell'operazione con success=true/false, message e buildings (array di edifici completati)
  */
 function check_completed_buildings($user_id) {
+    $pdo = null; // Inizializza $pdo come null
+    
     try {
         // Trova edifici completati ma non ancora attivati
         $completed_buildings = db_fetch_all("
@@ -252,7 +254,7 @@ function check_completed_buildings($user_id) {
                 db_transaction_rollback($pdo);
                 return [
                     'success' => false,
-                    'message' => 'Errore durante l\'attivazione dell\'edificio',
+                    'message' => 'Errore durante l\'attivazione dell\'edificio: ' . $building['name'] . ' (ID: ' . $building['player_building_id'] . ')',
                     'buildings' => []
                 ];
             }
@@ -266,7 +268,7 @@ function check_completed_buildings($user_id) {
             'buildings' => $completed_buildings
         ];
     } catch (PDOException $e) {
-        if (isset($pdo) && $pdo->inTransaction()) {
+        if ($pdo !== null && $pdo->inTransaction()) {
             db_transaction_rollback($pdo);
         }
         error_log("Errore durante il controllo degli edifici completati: " . $e->getMessage());

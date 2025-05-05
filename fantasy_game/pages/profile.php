@@ -110,8 +110,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_password'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profilo Utente - <?php echo SITE_NAME; ?></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/style.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/profile.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
@@ -122,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_password'])) {
             <div class="user-info">
                 <span class="welcome">Benvenuto, <strong><?php echo htmlspecialchars($username); ?></strong>!</span>
                 <a href="index.php" class="profile-btn">Torna al Gioco</a>
-                <a href="#" class="logout-btn" id="logout-btn">Logout</a>
+                <a href="<?php echo BASE_URL; ?>api.php?action=direct_logout" class="logout-btn" id="logout-btn">Logout</a>
             </div>
         </header>
         
@@ -308,25 +308,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_password'])) {
                 $('#' + tab + '-tab').addClass('active');
                 
                 window.location.hash = tab;
-            });
-            
-            // Gestione del logout
-            $('#logout-btn').click(function(e) {
-                e.preventDefault();
-                
-                $.ajax({
-                    url: 'backend.php?action=logout',
-                    method: 'GET',
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response.success) {
-                            window.location.href = 'index.php';
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Errore durante il logout:', error);
-                    }
-                });
             });
         });
 <!-- Aggiungi questo JavaScript nella sezione script esistente -->

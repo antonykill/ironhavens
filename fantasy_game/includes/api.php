@@ -329,7 +329,10 @@ function handle_api_request() {
 
 // Se questo file viene chiamato direttamente, gestisci la richiesta API
 if (basename($_SERVER['SCRIPT_FILENAME']) == basename(__FILE__)) {
-    require_once '../config.php';
-    require_once 'functions.php';
-    handle_api_request();
+    // Determine if we're in the includes directory
+    if (dirname($_SERVER['SCRIPT_FILENAME']) == __DIR__) {
+        require_once __DIR__ . '/../config.php';
+        require_once 'functions.php';
+        handle_api_request();
+    }
 }

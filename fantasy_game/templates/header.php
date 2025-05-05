@@ -11,6 +11,14 @@
             <link rel="stylesheet" href="<?php echo get_asset_path('css/' . $css); ?>">
         <?php endforeach; ?>
     <?php endif; ?>
+    
+    <!-- Definizione variabili globali JavaScript -->
+    <script>
+        const BASE_URL = '<?php echo BASE_URL; ?>';
+        const USER_ID = <?php echo $logged_in ? $user_id : 'null'; ?>;
+        const IS_LOGGED_IN = <?php echo $logged_in ? 'true' : 'false'; ?>;
+    </script>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>

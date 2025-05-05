@@ -189,11 +189,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_building'])) {
 }
 
 // Gestione backup del database
-// Sostituisci questo codice nel file admin.php
-// Trova la parte relativa al backup del database (circa alla linea 199)
-// e sostituiscila con questo codice alternativo
-
-// Gestione backup del database
 if (isset($_GET['action']) && $_GET['action'] === 'backup') {
     try {
         // Ottieni connessione al database
@@ -419,8 +414,8 @@ switch ($action) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pannello Amministrativo - <?php echo SITE_NAME; ?></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/style.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/admin.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
@@ -429,8 +424,7 @@ switch ($action) {
             <h1><i class="fas fa-crown"></i> Pannello Amministrativo</h1>
             <div class="admin-user-info">
                 <span class="welcome">Admin: <strong><?php echo htmlspecialchars($username); ?></strong></span>
-                <a href="index.php" class="admin-btn">Torna al Gioco</a>
-                <a href="#" class="admin-btn logout-btn" id="logout-btn">Logout</a>
+                <a href="<?php echo BASE_URL; ?>index.php" class="admin-btn">Torna al Gioco</a>
             </div>
         </header>
         
@@ -446,26 +440,26 @@ switch ($action) {
         </div>
         <?php endif; ?>
         
-        <div class="admin-content">
-            <div class="admin-sidebar">
-                <ul class="admin-menu">
-                    <li class="<?php echo $action === 'dashboard' ? 'active' : ''; ?>">
-                        <a href="admin.php?action=dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-                    </li>
-                    <li class="<?php echo $action === 'users' ? 'active' : ''; ?>">
-                        <a href="admin.php?action=users"><i class="fas fa-users"></i> Utenti</a>
-                    </li>
-                    <li class="<?php echo $action === 'buildings' || $action === 'edit_building' ? 'active' : ''; ?>">
-                        <a href="admin.php?action=buildings"><i class="fas fa-building"></i> Edifici</a>
-                    </li>
-                    <li class="<?php echo $action === 'settings' ? 'active' : ''; ?>">
-                        <a href="admin.php?action=settings"><i class="fas fa-cogs"></i> Impostazioni</a>
-                    </li>
-                    <li>
-                        <a href="admin.php?action=backup"><i class="fas fa-database"></i> Backup Database</a>
-                    </li>
-                </ul>
-            </div>
+<div class="admin-content">
+    <div class="admin-sidebar">
+        <ul class="admin-menu">
+            <li class="<?php echo $action === 'dashboard' ? 'active' : ''; ?>">
+                <a href="<?php echo BASE_URL; ?>pages/admin.php?action=dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            </li>
+            <li class="<?php echo $action === 'users' ? 'active' : ''; ?>">
+                <a href="<?php echo BASE_URL; ?>pages/admin.php?action=users"><i class="fas fa-users"></i> Utenti</a>
+            </li>
+            <li class="<?php echo $action === 'buildings' || $action === 'edit_building' ? 'active' : ''; ?>">
+                <a href="<?php echo BASE_URL; ?>pages/admin.php?action=buildings"><i class="fas fa-building"></i> Edifici</a>
+            </li>
+            <li class="<?php echo $action === 'settings' ? 'active' : ''; ?>">
+                <a href="<?php echo BASE_URL; ?>pages/admin.php?action=settings"><i class="fas fa-cogs"></i> Impostazioni</a>
+            </li>
+            <li>
+                <a href="<?php echo BASE_URL; ?>pages/admin.php?action=backup"><i class="fas fa-database"></i> Backup Database</a>
+            </li>
+        </ul>
+    </div>
             
             <div class="admin-main">
                 <?php if ($action === 'dashboard'): ?>
@@ -895,6 +889,6 @@ switch ($action) {
         </div>
     </div>
     
-    <script src="js/admin.js"></script>
+    <script src="<?php echo BASE_URL; ?>assets/js/admin.js"></script>
 </body>
 </html>

@@ -511,12 +511,14 @@ function updateConstructionTimers() {
 // Controlla gli edifici completati
 function checkCompletedBuildings() {
     $.ajax({
-        url: 'api.php?action=check_buildings',
+        url: BASE_URL + 'api.php?action=check_buildings',
         method: 'GET',
         dataType: 'json',
         success: function(response) {
+            console.log('Risposta completa:', response); // Aggiungi questo per debug
+            
             if (!response.success) {
-                console.error('Errore nel controllo degli edifici completati:', response.message);
+                console.error('Errore nel controllo degli edifici completati:', response.message || 'Nessun messaggio di errore');
                 return;
             }
             
@@ -532,7 +534,14 @@ function checkCompletedBuildings() {
             }
         },
         error: function(xhr, status, error) {
-            console.error('Errore AJAX:', error);
+            console.error('Errore AJAX nel controllo degli edifici completati:', error);
+            console.error('Dettagli risposta:', xhr.responseText);
+            try {
+                const errorData = JSON.parse(xhr.responseText);
+                console.error('Dati di errore:', errorData);
+            } catch (e) {
+                console.error('Risposta non in formato JSON:', xhr.responseText);
+            }
         }
     });
 }
