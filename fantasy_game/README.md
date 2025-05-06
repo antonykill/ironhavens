@@ -26,18 +26,22 @@ ironhaven/
 ├── index.php                # Punto di ingresso principale
 ├── api.php                  # Endpoint per le API
 ├── config.php               # Configurazione generale
+├── logout.php               # Gestione del logout
 ├── includes/                # File di inclusione
 │   ├── functions.php        # Funzioni principali
 │   ├── api.php              # Gestione delle API
 │   ├── db.php               # Funzioni database
 │   ├── auth.php             # Autenticazione e autorizzazione
-│   └── building.php         # Funzioni per gli edifici
+│   ├── building.php         # Funzioni per gli edifici
+│   ├── experience.php       # NUOVO: Gestione dell'esperienza
+│   └── game_logging.php     # NUOVO: Funzioni per il logging del gioco
 ├── assets/                  # Risorse statiche
 │   ├── css/                 # Fogli di stile
 │   │   ├── style.css        # Stile principale
 │   │   ├── admin.css        # Stile del pannello admin
 │   │   ├── profile.css      # Stile della pagina profilo
-│   │   └── tech-tree.css    # Stile dell'albero tecnologico
+│   │   ├── tech-tree.css    # Stile dell'albero tecnologico
+│   │   └── admin_logs.css   # NUOVO: Stile per la pagina dei log di amministrazione
 │   ├── js/                  # JavaScript 
 │   │   ├── game.js          # Script principale del gioco
 │   │   └── admin.js         # Script del pannello admin
@@ -46,10 +50,18 @@ ironhaven/
 ├── pages/                   # Pagine del gioco
 │   ├── profile.php          # Pagina profilo
 │   ├── admin.php            # Pannello admin
-│   └── tech-tree.php        # Albero tecnologico
+│   ├── tech-tree.php        # Albero tecnologico
+│   └── admin_logs.php       # NUOVO: Pagina per visualizzare i log di amministrazione
 ├── templates/               # Template HTML
+│   ├── footer.php           # Template footer
+│   ├── game.php             # Template gioco
+│   ├── header.php           # Template header
+│   └── level_progress.php   # Template progresso livello
 └── setup/                   # File di setup e installazione
-    └── database.sql         # Schema del database
+    ├── database.sql         # Schema del database
+    ├── edifici.sql          # NUOVO: Dati degli edifici
+    ├── xd_constants.sql     # NUOVO: Costanti del gioco
+    └── game-logs-table.sql  # NUOVO: Schema della tabella dei log di gioco
 ```
 
 ## Installazione

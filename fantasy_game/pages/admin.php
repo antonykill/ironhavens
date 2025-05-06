@@ -416,6 +416,7 @@ switch ($action) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/style.css">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/admin.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/admin_logs.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
@@ -457,6 +458,9 @@ switch ($action) {
             </li>
             <li>
                 <a href="<?php echo BASE_URL; ?>pages/admin.php?action=backup"><i class="fas fa-database"></i> Backup Database</a>
+            </li>
+            <li class="<?php echo $action === 'logs' ? 'active' : ''; ?>">
+                <a href="<?php echo BASE_URL; ?>pages/admin_logs.php"><i class="fas fa-list-alt"></i> Log di Sistema</a>
             </li>
         </ul>
     </div>

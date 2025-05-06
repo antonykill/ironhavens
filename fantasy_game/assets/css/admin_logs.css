@@ -1,0 +1,142 @@
+/* Stili per migliorare la visualizzazione della tabella dei log */
+.admin-table {
+    color: #ffffff;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: #1a202c;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.admin-table th {
+    background-color: #171923;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 14px 15px;
+    border-bottom: 2px solid #2d3748;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9em;
+}
+
+.admin-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #2d3748;
+}
+
+.admin-table tr:hover {
+    background-color: #2d3748;
+}
+
+.admin-table tr:nth-child(even) {
+    background-color: #1e2533;
+}
+
+/* Miglioramento dei colori per i tipi di log - versione più scura ma vibrante */
+.log-type-AUTH {
+    color: #4299e1;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(66, 153, 225, 0.4);
+}
+
+.log-type-BUILDING {
+    color: #48bb78;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(72, 187, 120, 0.4);
+}
+
+.log-type-RESOURCE {
+    color: #ed8936;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(237, 137, 54, 0.4);
+}
+
+/* Miglioramento dei colori per le azioni - versione più scura ma vibrante */
+.log-action-LOGIN {
+    color: #63b3ed;
+    font-weight: bold;
+}
+
+.log-action-CONSTRUCTION_STARTED {
+    color: #68d391;
+    font-weight: bold;
+}
+
+.log-action-CONSTRUCTION_COMPLETED {
+    color: #4fd1c5;
+    font-weight: bold;
+}
+
+.log-action-RESOURCES_UPDATED {
+    color: #f6ad55;
+    font-weight: bold;
+}
+
+/* Migliora la visualizzazione dei dati JSON */
+.log-data-preview {
+    font-family: 'Courier New', monospace;
+    color: #a0aec0;
+    background-color: #2d3748;
+    padding: 5px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+/* Miglioramento dello stile dell'header */
+.admin-header {
+    background-color: #1a202c;
+    border: 1px solid #2d3748;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.admin-header h1 {
+    color: #4299e1;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.admin-header h1 i {
+    color: #4299e1;
+}
+
+/* Miglioramento della sezione principale */
+.admin-section {
+    background-color: #1a202c;
+    border: 1px solid #2d3748;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.admin-section h2 {
+    color: #e2e8f0;
+    border-bottom: 1px solid #2d3748;
+    padding-bottom: 10px;
+    margin-top: 0;
+}
+
+/* Miglioramento del piè di pagina */
+.admin-footer {
+    color: #a0aec0;
+    text-align: center;
+    padding: 15px 0;
+    margin-top: 20px;
+    font-size: 0.9em;
+}
+
+/* Generale */
+body {
+    background-color: #0f1219;
+}
+
+.admin-container {
+    background-color: #0f1219;
+    color: #e2e8f0;
+}

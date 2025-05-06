@@ -127,7 +127,17 @@ function login_user($username_or_email, $password) {
             'event_type' => 'LOGIN',
             'event_description' => 'Accesso effettuato'
         ]);
+         // Registra il log di autenticazione
+        log_game_action('AUTH', 'LOGIN', [
+            'username' => $user['username'],
+            'ip_address' => $_SERVER['REMOTE_ADDR'],
+            'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown'
+        ], $user['user_id']);
         
+        // Assegna XP per il login giornaliero se la funzione esiste
+        if (function_exists('award_daily_login_xp')) {
+            award_daily_login_xp($user['user_id']);
+        }
         return [
             'success' => true, 
             'user_id' => $user['user_id'], 

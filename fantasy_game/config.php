@@ -10,6 +10,8 @@ define('DB_HOST', 'localhost');          // Host del database
 define('DB_NAME', 'u492367864_ironhaven');  // Nome del database
 define('DB_USER', 'u492367864_ironhaven');  // Username del database
 define('DB_PASS', '!3N#sAbG');           // Password del database (sostituisci con la tua password)
+define('ENABLE_DB_LOGGING', true);  // true per attivare il logging del database
+define('LOG_RETENTION_DAYS', 30);   // giorni di conservazione dei log
 
 // Configurazioni del gioco
 define('SITE_NAME', 'Ironhaven');

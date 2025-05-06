@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 /**
  * Index File
  * 
@@ -25,7 +28,7 @@ if ($logged_in) {
     $completed_buildings = check_completed_buildings($user_id);
     
     // Aggiorna le risorse ogni volta che l'utente carica la pagina
-    update_player_resources($user_id);
+    //update_player_resources($user_id); evita di aggiornare ogni volta le risorse
 }
 
 // Gestione del routing

@@ -192,6 +192,19 @@ function start_building_construction($user_id, $building_type_id) {
             'event_type' => 'CONSTRUCTION_STARTED',
             'event_description' => 'Iniziata costruzione: ' . $building['name']
         ]);
+        // Registra il log della costruzione avviata
+        log_building_action('CONSTRUCTION_STARTED', [
+            'building_id' => $building_id,
+            'building_type_id' => $building_type_id,
+            'building_name' => $building['name'],
+            'completion_time' => $completion_time,
+            'resources_spent' => [
+            'water' => $building['water_cost'],
+            'food' => $building['food_cost'],
+            'wood' => $building['wood_cost'],
+            'stone' => $building['stone_cost']
+        ]
+     ], $user_id);
         
         if (!$event_inserted) {
             db_transaction_rollback($pdo);
@@ -221,8 +234,13 @@ function start_building_construction($user_id, $building_type_id) {
  * @param int $user_id ID del giocatore
  * @return array Risultato dell'operazione con success=true/false, message e buildings (array di edifici completati)
  */
+/**
+ * Controlla se ci sono edifici la cui costruzione è stata completata
+ * @param int $user_id ID del giocatore
+ * @return array Risultato dell'operazione con success=true/false, message e buildings (array di edifici completati)
+ */
 function check_completed_buildings($user_id) {
-    $pdo = null; // Inizializza $pdo come null
+    $pdo = null;
     
     try {
         // Trova edifici completati ma non ancora attivati
@@ -242,25 +260,43 @@ function check_completed_buildings($user_id) {
         // Attiva tutti gli edifici completati
         $pdo = db_transaction_begin();
         
-        foreach ($completed_buildings as $building) {
-            $updated = db_update(
-                'player_buildings',
-                ['is_active' => 1],
-                'player_building_id = ?',
-                [$building['player_building_id']]
-            );
-            
-            if (!$updated) {
-                db_transaction_rollback($pdo);
-                return [
-                    'success' => false,
-                    'message' => 'Errore durante l\'attivazione dell\'edificio: ' . $building['name'] . ' (ID: ' . $building['player_building_id'] . ')',
-                    'buildings' => []
-                ];
-            }
-        }
+foreach ($completed_buildings as $building) {
+    $updated = db_update(
+        'player_buildings',
+        ['is_active' => 1],
+        'player_building_id = ?',
+        [$building['player_building_id']]
+    );
+    
+    if (!$updated) {
+        db_transaction_rollback($pdo);
+        return [
+            'success' => false,
+            'message' => 'Errore durante l\'attivazione dell\'edificio: ' . $building['name'] . ' (ID: ' . $building['player_building_id'] . ')',
+            'buildings' => []
+        ];
+    }
+    
+    // Assegna XP per il completamento dell'edificio
+    if (function_exists('award_building_completion_xp')) {
+        award_building_completion_xp(
+            $user_id, 
+            $building['player_building_id'], 
+            $building['level']
+        );
+    }
+    
+    log_building_action('CONSTRUCTION_COMPLETED', [
+        'building_id' => $building['player_building_id'],
+        'building_type_id' => $building['building_type_id'],
+        'building_name' => $building['name']
+    ], $user_id);
+}
         
         db_transaction_commit($pdo);
+        
+        // Aggiorna immediatamente le risorse dopo l'attivazione degli edifici
+        update_player_resources($user_id);
         
         return [
             'success' => true,
@@ -442,6 +478,29 @@ function get_tech_tree() {
  */
 function update_player_resources($user_id) {
     try {
+        // Ottieni i dati delle risorse attuali
+        $resources = get_player_resources($user_id);
+        $last_update = new DateTime($resources['last_update']);
+        $now = new DateTime();
+        
+        // Calcola il tempo trascorso in minuti dall'ultimo aggiornamento
+        $interval = $last_update->diff($now);
+        $minutes_passed = ($interval->days * 24 * 60) + ($interval->h * 60) + $interval->i;
+        
+        // Se sono passati meno di 1 minuto e non è la prima volta, non aggiornare
+        if ($minutes_passed < 1 && $resources['last_update'] != null) {
+            return [
+                'success' => true,
+                'message' => 'Tempo insufficiente tra aggiornamenti',
+                'production' => [
+                    'water' => 0,
+                    'food' => 0,
+                    'wood' => 0,
+                    'stone' => 0
+                ]
+            ];
+        }
+        
         // Ottieni tutti gli edifici attivi del giocatore
         $buildings = db_fetch_all("
             SELECT pb.building_type_id, pb.quantity, pb.level, 
@@ -464,8 +523,14 @@ function update_player_resources($user_id) {
             $total_stone += $building['stone_production'] * $building['quantity'] * $building['level'];
         }
         
-        // Ottieni le risorse attuali e la capacità massima
-        $resources = get_player_resources($user_id);
+        // Moltiplica la produzione per il numero di minuti trascorsi (con un minimo di 1)
+        $minutes_for_calculation = max(1, $minutes_passed);
+        $total_water *= $minutes_for_calculation;
+        $total_food *= $minutes_for_calculation;
+        $total_wood *= $minutes_for_calculation;
+        $total_stone *= $minutes_for_calculation;
+        
+        // Ottieni la capacità massima
         $max_capacity = $resources['max_capacity'];
         
         // Aggiorna le risorse del giocatore
@@ -494,6 +559,22 @@ function update_player_resources($user_id) {
                 ]
             ];
         }
+        
+        // Registra l'aggiornamento delle risorse con successo
+        log_resource_action('RESOURCES_UPDATED', [
+            'production' => [
+                'water' => $total_water,
+                'food' => $total_food,
+                'wood' => $total_wood,
+                'stone' => $total_stone
+            ],
+            'current_resources' => [
+                'water' => min($resources['water'] + $total_water, $max_capacity),
+                'food' => min($resources['food'] + $total_food, $max_capacity),
+                'wood' => min($resources['wood'] + $total_wood, $max_capacity),
+                'stone' => min($resources['stone'] + $total_stone, $max_capacity)
+            ]
+        ], $user_id);
         
         return [
             'success' => true,

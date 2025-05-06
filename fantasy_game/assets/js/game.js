@@ -497,15 +497,22 @@ function startConstruction(buildingTypeId) {
 
 // Aggiorna i timer di costruzione
 function updateConstructionTimers() {
+    let completedFound = false;
+    
     $('.construction-time').each(function() {
         const completionTime = $(this).data('completion');
         $(this).text(formatTimeRemaining(completionTime));
         
-        // Se il timer è scaduto, aggiorna gli edifici
+        // Se il timer è scaduto, segna come completato
         if ($(this).text() === "Completato!") {
-            checkCompletedBuildings();
+            completedFound = true;
         }
     });
+    
+    // Se almeno un edificio è completato, controlla immediatamente
+    if (completedFound) {
+        checkCompletedBuildings();
+    }
 }
 
 // Controlla gli edifici completati
@@ -515,8 +522,6 @@ function checkCompletedBuildings() {
         method: 'GET',
         dataType: 'json',
         success: function(response) {
-            console.log('Risposta completa:', response); // Aggiungi questo per debug
-            
             if (!response.success) {
                 console.error('Errore nel controllo degli edifici completati:', response.message || 'Nessun messaggio di errore');
                 return;
@@ -531,17 +536,17 @@ function checkCompletedBuildings() {
                 updateResourcesDisplay();
                 loadPlayerBuildings();
                 updateServerResources();
+                
+                // Se c'è stato un aumento di livello, mostra una notifica speciale
+                if (response.level_up) {
+                    showLevelUpNotification(response.new_level);
+                } else if (response.xp_gained) {
+                    showXpGainedNotification(response.xp_gained, 'Edificio completato');
+                }
             }
         },
         error: function(xhr, status, error) {
             console.error('Errore AJAX nel controllo degli edifici completati:', error);
-            console.error('Dettagli risposta:', xhr.responseText);
-            try {
-                const errorData = JSON.parse(xhr.responseText);
-                console.error('Dati di errore:', errorData);
-            } catch (e) {
-                console.error('Risposta non in formato JSON:', xhr.responseText);
-            }
         }
     });
 }
@@ -705,5 +710,19 @@ $(document).ready(function() {
         
         // Controlla gli edifici completati ogni 10 secondi
         setInterval(checkCompletedBuildings, 10000);
+        
+        // Assegna XP periodici ogni 5 minuti
+        setInterval(function() {
+            $.ajax({
+                url: 'api.php?action=award_periodic_xp',
+                method: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success && response.production && response.production.level_up) {
+                        showLevelUpNotification(response.production.new_level);
+                    }
+                }
+            });
+        }, 300000); // 5 minuti
     }
 });

@@ -134,6 +134,41 @@ function handle_api_request() {
                 return;
             }
             
+        case 'check_completed_buildings':
+            if (!is_logged_in()) {
+                echo json_encode(['error' => 'Utente non autenticato']);
+                return;
+            }
+            
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : get_current_user_id();
+            
+            if ($user_id != get_current_user_id() && !is_admin()) {
+                echo json_encode(['error' => 'Non autorizzato']);
+                return;
+            }
+            
+            $result = check_completed_buildings($user_id);
+            
+            echo json_encode($result);
+            break;
+            
+        case 'award_periodic_xp':
+            if (!is_logged_in()) {
+                echo json_encode(['error' => 'Utente non autenticato']);
+                return;
+            }
+            
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : get_current_user_id();
+            
+            if ($user_id != get_current_user_id() && !is_admin()) {
+                echo json_encode(['error' => 'Non autorizzato']);
+                return;
+            }
+            
+            $result = award_periodic_xp($user_id);
+            
+            echo json_encode($result);
+            break;
             // Ottieni le dipendenze dell'edificio
             $building['dependencies'] = get_building_dependencies($building_id);
             
